@@ -25,7 +25,7 @@ Not applicable.
 
 ## Rough Breakdown of Tasks
 
-1. Figure out creating certificates for institutions (i.e. public keys). Look at letsencrypt or self-signed certs. These are the keys that users will use to certify that the transaction data is valid.
+1. Figure out creating certificates for institutions (i.e. public keys). Look at letsencrypt or self-signed certs. These are the keys that users will use to certify that the certificate/diploma is from a real/valid institution.
 2. Create and deploy the smart contract.
     a. Add institution to a list of allowable minters.
     b. Add mint NFT functionality.
