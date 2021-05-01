@@ -24,6 +24,10 @@ This dApp lets you track your diplomas, certifications, endorsed skills and work
 
 Not applicable. 
 
+## How It Works
+
+![BlockSkillz flow](images/BlockSkillz_Flow.png)
+
 ## Rough Breakdown of Tasks
 
 1. Figure out creating certificates for institutions (i.e. public keys). Look at letsencrypt or self-signed certs. These are the keys that users will use to verify the authenticity of the certificate/diploma.
