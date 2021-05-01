@@ -22,7 +22,7 @@ This dApp lets you track your diplomas, certifications, endorsed skills and work
 
 ## Data Sources
 
-Not applicable. 
+- OpenZeppelin
 
 ## How It Works
 
