@@ -6,16 +6,18 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5
 
 contract BlockSkillz is ERC721Full, Ownable {
 
+    constructor() ERC721Full("BlockSkillz", "BSZ") public {}
+
     using Counters for Counters.Counter;
 
     Counters.Counter certification_ids;
 
     struct Certification {
-        address owner;
         string institution_name;
         string certification;
         string signature;
         string uri;
+        uint expirationInMs;
     }
 
     // Track institutions that can award certifications
@@ -24,12 +26,11 @@ contract BlockSkillz is ERC721Full, Ownable {
     mapping(uint => Certification) public certifications;
 
     event CertificationAward(
-        address owner
-        , address institution
-        , string institution_name
+        string institution_name
         , string certification
         , string signature
-        , string reference_uri
+        , string token_uri
+        , uint expirationInMs
     );
     event InstitutionAdded(address institution, string institution_name);
     event InstitutionRemoved(address institution);
@@ -57,17 +58,20 @@ contract BlockSkillz is ERC721Full, Ownable {
         , string memory institution_name
         , string memory certification
         , string memory signature
-        , string memory reference_uri
-    ) public onlyInstitution {
+        , string memory token_uri
+        , uint expirationInMs
+    ) public onlyInstitution returns (uint) {
         certification_ids.increment();
         uint token_id = certification_ids.current();
         
         _mint(owner, token_id);
-        _setTokenURI(token_id, reference_uri);
+        _setTokenURI(token_id, token_uri);
         
-        certifications[token_id] = Certification(owner, institution_name, certification, signature, reference_uri);
+        certifications[token_id] = Certification(institution_name, certification, signature, token_uri, expirationInMs);
         
-        emit CertificationAward(owner, msg.sender, institution_name, certification, signature, reference_uri);
+        emit CertificationAward(institution_name, certification, signature, token_uri, expirationInMs);
+        
+        return token_id;
     }
 
 }
