@@ -1,4 +1,6 @@
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { useContext } from "react";
+import { Ethereum } from "../Ethereum";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
+  const { isAdmin } = useContext(Ethereum);
 
   return (
     <div className={classes.root}>
@@ -44,11 +47,20 @@ const Home = () => {
           alignItems="center"
           spacing={2}
         >
-          <Grid item>
-            <Button variant="contained" href="/register">
-              Register Your Academic Institution
-            </Button>
-          </Grid>
+          {isAdmin && (
+            <Grid item>
+              <Button variant="contained" href="/institutions">
+                Manage Institutions
+              </Button>
+            </Grid>
+          )}
+          {!isAdmin && (
+            <Grid item>
+              <Button variant="contained" href="/register">
+                Register Your Academic Institution
+              </Button>
+            </Grid>
+          )}
           <Grid item>
             <Button variant="contained" color="primary" href="/award">
               Award Certificate or Endorse Skill
