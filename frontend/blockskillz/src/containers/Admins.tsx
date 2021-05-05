@@ -51,20 +51,24 @@ const useStyles = makeStyles((theme) => ({
 const Admins = () => {
   const { currentAccount, isAdmin, getContract } = useContext(Ethereum);
   const classes = useStyles();
+  const [name, setName] = useState("");
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarMessage, setSnackBarMessage] = useState("");
 
-  const handleAddressChange = (event: any) => {
-    setWalletAddress(event.target.value);
-  };
-
   const handleRegister = async () => {
+    const trimmedName = name.trim();
     const trimmedAddress = walletAddress.trim();
     const contract = await getContract();
-    if (isAdmin && contract && currentAccount && trimmedAddress) {
+    if (
+      isAdmin &&
+      contract &&
+      currentAccount &&
+      trimmedName &&
+      trimmedAddress
+    ) {
       await contract.methods
-        .addAdmin(trimmedAddress)
+        .addAdmin(trimmedAddress, trimmedName)
         .send({ from: currentAccount })
         .on("receipt", async (receipt: any) => {
           console.log(`Transaction successful: ${receipt.transactionHash}`);
@@ -74,6 +78,7 @@ const Admins = () => {
           setSnackBarOpen(true);
 
           // clear form
+          setName("");
           setWalletAddress("");
         })
         .on("error", (error: any) => {
@@ -143,10 +148,19 @@ const Admins = () => {
                 <Grid item>
                   <TextField
                     required
+                    label="Name"
+                    value={name}
+                    fullWidth
+                    onChange={(event) => setName(event.target.value)}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    required
                     label="Wallet Address"
                     value={walletAddress}
                     fullWidth
-                    onChange={handleAddressChange}
+                    onChange={(event) => setWalletAddress(event.target.value)}
                   />
                 </Grid>
                 <Grid item>
