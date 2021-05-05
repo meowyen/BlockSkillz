@@ -5,13 +5,14 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Web3 from "web3";
 import { AbiItem } from "web3-utils";
 import BlockSkillz from "./BlockSkillz.json";
+import Admins from "./containers/Admins";
 import AwardCertificate from "./containers/AwardCertificate";
 import Home from "./containers/Home";
 import Institutions from "./containers/Institutions";
 import RegisterInstitution from "./containers/RegisterInstitution";
 import { Ethereum } from "./Ethereum";
 
-const CONTRACT_ADDRESS = "0xAcDcB9E164D15a9b9071508a6791f7Cc26DB1Ba8";
+const CONTRACT_ADDRESS = "0xAbc52c15a87cd83cbec13e596429AD4dA6e45a12";
 
 const theme = createMuiTheme({
   typography: {
@@ -22,6 +23,7 @@ const theme = createMuiTheme({
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState<string>();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isInstitution, setIsInstitution] = useState(true);
   const [web3, setWeb3] = useState<Web3>();
 
   const getContract = useCallback(async () => {
@@ -88,12 +90,16 @@ const App = () => {
               currentAccount.toLowerCase() === contractOwner.toLowerCase()
             );
           });
+
+        contract.methods.institution().call().then(setIsInstitution);
       }
     });
   }, [currentAccount, getContract]);
 
   return (
-    <Ethereum.Provider value={{ currentAccount, isAdmin, web3, getContract }}>
+    <Ethereum.Provider
+      value={{ currentAccount, isAdmin, isInstitution, web3, getContract }}
+    >
       <ThemeProvider theme={theme}>
         <BrowserRouter>
           <Switch>
@@ -103,6 +109,11 @@ const App = () => {
             <Route path="/award">
               <AwardCertificate />
             </Route>
+            {isAdmin && (
+              <Route exact path="/admins">
+                <Admins />
+              </Route>
+            )}
             {isAdmin && (
               <Route exact path="/institutions">
                 <Institutions />

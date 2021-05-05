@@ -48,29 +48,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Institutions = () => {
+const Admins = () => {
   const { currentAccount, isAdmin, getContract } = useContext(Ethereum);
   const classes = useStyles();
-  const [name, setName] = useState<string>("");
   const [walletAddress, setWalletAddress] = useState<string>("");
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [snackBarMessage, setSnackBarMessage] = useState("");
-
-  const handleNameChange = (event: any) => {
-    setName(event.target.value);
-  };
 
   const handleAddressChange = (event: any) => {
     setWalletAddress(event.target.value);
   };
 
   const handleRegister = async () => {
-    const trimmedName = name.trim();
     const trimmedAddress = walletAddress.trim();
     const contract = await getContract();
-    if (isAdmin && contract && currentAccount && trimmedName && trimmedAddress) {
+    if (isAdmin && contract && currentAccount && trimmedAddress) {
       await contract.methods
-        .addInstitution(trimmedAddress, trimmedName)
+        .addAdmin(trimmedAddress)
         .send({ from: currentAccount })
         .on("receipt", async (receipt: any) => {
           console.log(`Transaction successful: ${receipt.transactionHash}`);
@@ -80,7 +74,6 @@ const Institutions = () => {
           setSnackBarOpen(true);
 
           // clear form
-          setName("");
           setWalletAddress("");
         })
         .on("error", (error: any) => {
@@ -126,7 +119,7 @@ const Institutions = () => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Typography className={classes.title} variant="h3">
-            Manage Institutions
+            Manage Admins
           </Typography>
         </Grid>
         <Grid container direction="column" justify="center" alignItems="center">
@@ -139,7 +132,7 @@ const Institutions = () => {
           >
             <Grid item>
               <Typography className={classes.stepTitle}>
-                Register New Institution
+                Register New Admin
               </Typography>
               <Grid
                 className={classes.form}
@@ -147,15 +140,6 @@ const Institutions = () => {
                 direction="column"
                 spacing={2}
               >
-                <Grid item>
-                  <TextField
-                    required
-                    label="Name"
-                    value={name}
-                    fullWidth
-                    onChange={handleNameChange}
-                  />
-                </Grid>
                 <Grid item>
                   <TextField
                     required
@@ -193,4 +177,4 @@ const Institutions = () => {
   );
 };
 
-export default Institutions;
+export default Admins;

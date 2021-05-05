@@ -2,7 +2,7 @@ import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { useContext } from "react";
 import { Ethereum } from "../Ethereum";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
   },
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = () => {
   const classes = useStyles();
-  const { isAdmin } = useContext(Ethereum);
+  const { isAdmin, isInstitution } = useContext(Ethereum);
 
   return (
     <div className={classes.root}>
@@ -48,11 +48,18 @@ const Home = () => {
           spacing={2}
         >
           {isAdmin && (
-            <Grid item>
-              <Button variant="contained" href="/institutions">
-                Manage Institutions
-              </Button>
-            </Grid>
+            <>
+              <Grid item>
+                <Button variant="contained" href="/admins">
+                  Manage Admins
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button variant="contained" href="/institutions">
+                  Manage Institutions
+                </Button>
+              </Grid>
+            </>
           )}
           {!isAdmin && (
             <Grid item>
@@ -61,11 +68,13 @@ const Home = () => {
               </Button>
             </Grid>
           )}
-          <Grid item>
-            <Button variant="contained" color="primary" href="/award">
-              Award Certificate or Endorse Skill
-            </Button>
-          </Grid>
+          {isInstitution && (
+            <Grid item>
+              <Button variant="contained" color="primary" href="/award">
+                Award Certificate or Endorse Skill
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </div>
