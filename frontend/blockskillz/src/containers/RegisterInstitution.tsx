@@ -3,7 +3,7 @@ import {
   Grid,
   makeStyles,
   TextField,
-  Typography,
+  Typography
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -95,7 +95,11 @@ const RegisterInstitution = () => {
                 endorsement.
               </Typography>
               <div style={{ textAlign: "center" }}>
-                <Button className={classes.button} variant="contained" color="secondary">
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  color="secondary"
+                >
                   Generate Keys
                 </Button>
               </div>

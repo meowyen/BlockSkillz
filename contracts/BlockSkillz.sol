@@ -53,6 +53,10 @@ contract BlockSkillz is ERC721Full, Ownable {
         emit InstitutionRemoved(institution);
     }
 
+    function institution() public view returns(bool) {
+        return institutions[msg.sender];
+    }
+
     function awardCertification(
         address owner
         , string memory institution_name

@@ -5,6 +5,7 @@ import { Contract } from "web3-eth-contract";
 interface IEthereum {
   currentAccount?: string;
   isAdmin: boolean;
+  isInstitution: boolean;
   web3?: Web3 | null;
 
   getContract: () => Promise<Contract | undefined>;
@@ -12,6 +13,7 @@ interface IEthereum {
 
 export const Ethereum = React.createContext<IEthereum>({
   isAdmin: false,
+  isInstitution: false,
   getContract: async () => {
     return Promise.resolve(undefined);
   },
