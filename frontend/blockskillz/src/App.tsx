@@ -10,9 +10,11 @@ import AwardCertificate from "./containers/AwardCertificate";
 import Home from "./containers/Home";
 import Institutions from "./containers/Institutions";
 import RegisterInstitution from "./containers/RegisterInstitution";
+import Tokens from "./containers/Tokens";
 import { Ethereum } from "./Ethereum";
 
-const CONTRACT_ADDRESS = "0xAbc52c15a87cd83cbec13e596429AD4dA6e45a12";
+const CONTRACT_ADDRESS = "0xE6c5bA6E083D67c5F653E66FFB9594a166A8267C";
+// const LOCAL_CONTRACT_ADDRESS = "0xAbc52c15a87cd83cbec13e596429AD4dA6e45a12";
 
 const theme = createMuiTheme({
   typography: {
@@ -119,6 +121,9 @@ const App = () => {
                 <Institutions />
               </Route>
             )}
+            <Route path="/tokens">
+              <Tokens />
+            </Route>
             <Route path="/">
               <Home />
             </Route>

@@ -76,7 +76,6 @@ const AwardCertificate = () => {
           )
           .send({ from: currentAccount })
           .on("receipt", async (receipt: any) => {
-            console.log(receipt);
             console.log(`Transaction successful: ${receipt.transactionHash}`);
             setSnackBarMessage(
               `Transaction successful: ${receipt.transactionHash}`
