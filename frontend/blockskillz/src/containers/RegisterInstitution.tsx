@@ -2,9 +2,13 @@ import {
   Button,
   Grid,
   makeStyles,
+  Paper,
+  Snackbar,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
+import axios from "axios";
+import { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,13 +47,63 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     textAlign: "center",
   },
+  snackbar: {
+    backgroundColor: "#666666",
+    padding: "12px 24px",
+    color: "white",
+    maxWidth: 240,
+  },
 }));
 
 const RegisterInstitution = () => {
   const classes = useStyles();
+  const [snackBarOpen, setSnackbarOpen] = useState(false);
+  const [keyPair, setKeyPair] = useState<any>({});
+
+  const handleGenerateKeyPair = async () => {
+    // TODO: Uncomment when API is deployed
+    // const response = await axios.get("/keypair");
+    // setKeyPair(response.data);
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackBarClose = async () => {
+    setSnackbarOpen(false);
+    setKeyPair({});
+  };
 
   return (
     <div className={classes.root}>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={10000}
+        open={snackBarOpen}
+        onClose={handleSnackBarClose}
+        key="keypair-snackbar"
+      >
+        <Grid container className={classes.root} spacing={2}>
+          <Grid item>
+            <Paper elevation={2} className={classes.snackbar}>
+            <div>
+                <Typography variant="subtitle1">Private Key</Typography>
+              </div>
+              <div>
+                <Typography variant="body2">{keyPair.private}</Typography>
+              </div>
+            </Paper>
+          </Grid>
+          <Grid item>
+            <Paper elevation={2} className={classes.snackbar}>
+              <div>
+                <Typography variant="subtitle1">Public Key</Typography>
+              </div>
+              <div>
+                <Typography variant="body2">{keyPair.public}</Typography>
+              </div>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Snackbar>
       <Grid container direction="row" alignItems="center" justify="center">
         <Grid item>
           <Button className={classes.button} variant="contained" href="/">
@@ -99,6 +153,7 @@ const RegisterInstitution = () => {
                   className={classes.button}
                   variant="contained"
                   color="secondary"
+                  onClick={handleGenerateKeyPair}
                 >
                   Generate Keys
                 </Button>

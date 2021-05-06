@@ -75,6 +75,13 @@ const Home = () => {
               </Button>
             </Grid>
           )}
+          {!isAdmin && !isInstitution && (
+            <Grid item>
+              <Button variant="contained" color="secondary" href="/tokens">
+                My Tokens
+              </Button>
+            </Grid>
+          )}
         </Grid>
       </Grid>
     </div>
