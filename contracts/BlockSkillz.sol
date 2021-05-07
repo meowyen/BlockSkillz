@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.5;
 
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/token/ERC721/ERC721Full.sol";
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5.0/contracts/ownership/Ownable.sol";
@@ -6,7 +6,9 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/release-v2.5
 
 contract BlockSkillz is ERC721Full, Ownable {
 
-    constructor() ERC721Full("BlockSkillz", "BSZ") public {}
+    constructor() ERC721Full("BlockSkillz", "BSZ") public {
+        admins[msg.sender] = true;
+    }
 
     using Counters for Counters.Counter;
 
@@ -20,6 +22,13 @@ contract BlockSkillz is ERC721Full, Ownable {
         uint expirationInMs;
     }
 
+
+    // Track admins who can add institutions
+    mapping(address => bool) admins;
+
+    event AdminAdded(address admin, string admin_name);
+    event AdminRemoved(address admin);
+    
     // Track institutions that can award certifications
     mapping(address => bool) institutions;
     // Track certifications
@@ -35,11 +44,32 @@ contract BlockSkillz is ERC721Full, Ownable {
     event InstitutionAdded(address institution, string institution_name);
     event InstitutionRemoved(address institution);
     
+    
+        // Admins are whitelisted for adding institutions
+    modifier onlyAdmin() {
+        require(admins[msg.sender], "You do not have permission to add institutions!");
+        _;
+        
+    }
+    
+    function addAdmin(address admin, string memory admin_name) public onlyAdmin {
+        admins[admin] = true;
+        
+        emit AdminAdded(admin, admin_name);
+    }
+    
+    function removeAdmin(address admin) public onlyAdmin {
+        admins[admin] = false;
+        
+        emit AdminRemoved(admin);
+    
+    }
     // Only institutions that have been added to the list can award certifications
     modifier onlyInstitution() {
         require(institutions[msg.sender], "You do not have permission to award certifications!");
         _;
     }
+    
     
     function addInstitution(address institution, string memory institution_name) public onlyOwner {
         institutions[institution] = true;
