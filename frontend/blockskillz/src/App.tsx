@@ -13,7 +13,7 @@ import RegisterInstitution from "./containers/RegisterInstitution";
 import Tokens from "./containers/Tokens";
 import { Ethereum } from "./Ethereum";
 
-const CONTRACT_ADDRESS = "0xE6c5bA6E083D67c5F653E66FFB9594a166A8267C";
+const CONTRACT_ADDRESS = "0x1A9C9Db555cb6d6A3ce9EfB593b5f0efc88FaA5c";
 // const LOCAL_CONTRACT_ADDRESS = "0xAbc52c15a87cd83cbec13e596429AD4dA6e45a12";
 
 const theme = createMuiTheme({

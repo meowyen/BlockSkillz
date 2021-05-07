@@ -61,9 +61,10 @@ const RegisterInstitution = () => {
   const [keyPair, setKeyPair] = useState<any>({});
 
   const handleGenerateKeyPair = async () => {
-    // TODO: Uncomment when API is deployed
-    // const response = await axios.get("/keypair");
-    // setKeyPair(response.data);
+    const response = await axios.get(
+      "https://blockskillzkeygen.azurewebsites.net/generate_keys"
+    );
+    setKeyPair(response.data);
     setSnackbarOpen(true);
   };
 
@@ -84,7 +85,7 @@ const RegisterInstitution = () => {
         <Grid container className={classes.root} spacing={2}>
           <Grid item>
             <Paper elevation={2} className={classes.snackbar}>
-            <div>
+              <div>
                 <Typography variant="subtitle1">Private Key</Typography>
               </div>
               <div>
