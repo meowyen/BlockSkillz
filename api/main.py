@@ -11,4 +11,4 @@ async def generate_keys():
     keyPair = RSA.generate(bits=1024)
     pubKey = keyPair.publickey().exportKey("PEM") 
     privkey = keyPair.exportKey("PEM") # Generate private and public keys
-    return {"private": keyPair, "public": pubKey}
+    return {"private": privkey, "public": pubKey}
