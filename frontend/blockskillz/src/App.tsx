@@ -13,7 +13,7 @@ import RegisterInstitution from "./containers/RegisterInstitution";
 import Tokens from "./containers/Tokens";
 import { Ethereum } from "./Ethereum";
 
-const CONTRACT_ADDRESS = "0x1A9C9Db555cb6d6A3ce9EfB593b5f0efc88FaA5c";
+const CONTRACT_ADDRESS = "0x2Da3c5109B5B211b5Ec7EaeFD69E02ea85077fbd";
 // const LOCAL_CONTRACT_ADDRESS = "0xAbc52c15a87cd83cbec13e596429AD4dA6e45a12";
 
 const theme = createMuiTheme({
@@ -84,15 +84,7 @@ const App = () => {
   useEffect(() => {
     getContract().then((contract) => {
       if (contract && currentAccount) {
-        contract.methods
-          .owner()
-          .call()
-          .then((contractOwner: string) => {
-            setIsAdmin(
-              currentAccount.toLowerCase() === contractOwner.toLowerCase()
-            );
-          });
-
+        contract.methods.administrator().call().then(setIsAdmin);
         contract.methods.institution().call().then(setIsInstitution);
       }
     });
