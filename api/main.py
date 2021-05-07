@@ -8,5 +8,7 @@ async def root():
 
 @app.get("/generate_keys")
 async def generate_keys():
-    # Generate private and public keys
-    return {"private": "YOUR_PRIVATE_KEY", "public": "YOUR_PUBLIC_KEY"}
+    keyPair = RSA.generate(bits=1024)
+    pubKey = keyPair.publickey().exportKey("PEM") 
+    privkey = keyPair.exportKey("PEM") # Generate private and public keys
+    return {"private": keyPair, "public": pubKey}
