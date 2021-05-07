@@ -71,13 +71,13 @@ contract BlockSkillz is ERC721Full, Ownable {
     }
     
     
-    function addInstitution(address institution, string memory institution_name) public onlyOwner {
+    function addInstitution(address institution, string memory institution_name) public onlyAdmin {
         institutions[institution] = true;
         
         emit InstitutionAdded(institution, institution_name);
     }
     
-    function removeInstitution(address institution) public onlyOwner {
+    function removeInstitution(address institution) public onlyAdmin {
         institutions[institution] = false;
         
         emit InstitutionRemoved(institution);
