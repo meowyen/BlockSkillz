@@ -1,2 +1,7 @@
 .env
 .DS_Store
+.vscode
+
+# Python
+__pycache__/
+.ipynb_checkpoints
