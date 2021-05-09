@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,53 +57,52 @@ const useStyles = makeStyles((theme) => ({
 
 const RegisterInstitution = () => {
   const classes = useStyles();
-  const [snackBarOpen, setSnackbarOpen] = useState(false);
+  const privateKeyRef = useRef<HTMLInputElement>();
+  const publicKeyRef = useRef<HTMLInputElement>();
   const [keyPair, setKeyPair] = useState<any>({});
+  const [keyPairVisible, setKeyPairVisible] = useState<any>(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const handleGenerateKeyPair = async () => {
+    setKeyPairVisible({});
+    setKeyPairVisible(false);
+
     const response = await axios.get(
       "https://blockskillzkeygen.azurewebsites.net/generate_keys"
     );
+
     setKeyPair(response.data);
-    setSnackbarOpen(true);
+    setKeyPairVisible(true);
   };
 
-  const handleSnackBarClose = async () => {
-    setSnackbarOpen(false);
-    setKeyPair({});
+  const handleCopyPrivateKey = () => {
+    if (privateKeyRef && privateKeyRef.current) {
+      privateKeyRef.current.select();
+      document.execCommand("copy");
+      setCopySuccess(true);
+    }
+  };
+
+  const handleCopyPublicKey = () => {
+    if (publicKeyRef && publicKeyRef.current) {
+      publicKeyRef.current.select();
+      document.execCommand("copy");
+      setCopySuccess(true);
+    }
   };
 
   return (
     <div className={classes.root}>
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        autoHideDuration={10000}
-        open={snackBarOpen}
-        onClose={handleSnackBarClose}
-        key="keypair-snackbar"
+        autoHideDuration={5000}
+        open={copySuccess}
+        onClose={() => setCopySuccess(false)}
+        key="copy-success-snackbar"
       >
-        <Grid container className={classes.root} spacing={2}>
-          <Grid item>
-            <Paper elevation={2} className={classes.snackbar}>
-              <div>
-                <Typography variant="subtitle1">Private Key</Typography>
-              </div>
-              <div>
-                <Typography variant="body2">{keyPair.private}</Typography>
-              </div>
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Paper elevation={2} className={classes.snackbar}>
-              <div>
-                <Typography variant="subtitle1">Public Key</Typography>
-              </div>
-              <div>
-                <Typography variant="body2">{keyPair.public}</Typography>
-              </div>
-            </Paper>
-          </Grid>
-        </Grid>
+        <Paper elevation={2} className={classes.snackbar}>
+          <Typography variant="subtitle1">Key Copied!</Typography>
+        </Paper>
       </Snackbar>
       <Grid container direction="row" alignItems="center" justify="center">
         <Grid item>
@@ -159,6 +158,48 @@ const RegisterInstitution = () => {
                   Generate Keys
                 </Button>
               </div>
+              {keyPairVisible && (
+                <>
+                  <div style={{ margin: "10px 0", display: "flex" }}>
+                    <TextField
+                      id="private-key"
+                      inputRef={privateKeyRef}
+                      label="Private Key"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                      value={keyPair.private}
+                      fullWidth
+                    />
+                    <Button
+                      style={{ marginLeft: 5 }}
+                      onClick={handleCopyPrivateKey}
+                    >
+                      Copy
+                    </Button>
+                  </div>
+                  <div style={{ margin: "10px 0", display: "flex" }}>
+                    <TextField
+                      id="public-key"
+                      inputRef={publicKeyRef}
+                      label="Public Key"
+                      InputProps={{
+                        readOnly: true,
+                      }}
+                      variant="outlined"
+                      value={keyPair.public}
+                      fullWidth
+                    />
+                    <Button
+                      style={{ marginLeft: 5 }}
+                      onClick={handleCopyPublicKey}
+                    >
+                      Copy
+                    </Button>
+                  </div>
+                </>
+              )}
             </Grid>
             <Grid item>
               <Typography className={classes.stepTitle}>
