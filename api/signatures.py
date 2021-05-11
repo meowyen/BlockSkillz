@@ -2,14 +2,14 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 40,
+   "execution_count": 72,
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "b'-----BEGIN RSA PRIVATE KEY-----\\nMIICXAIBAAKBgQDomhy4Yz4fb/lUiCydVFku66NPXs506sUmA/WlCoLMeyD25ISz\\n23dj0Gopg45zee58RdmEIrOPQR8H1dDXEKKHGyCVlYADOoOT8FpGcDMtz/6PyKje\\n+vGUtB0CXKVAR/JPO0y0bER1pHe+i3wFBmdwILvRsmlOHPGCDpfULU103wIDAQAB\\nAoGABnHYBYnbu55BdRn4IScoThhW+YjXGpPeANwk5GeX+9drheZgq4+99++F3tRC\\nJalFYNRvSZh2i4ESkt0rQKeO1oxK90MSBWTjwbOt4HZFbstPRGX1Wcvv8hw8PA+Q\\ntkzUzPty/jatEsCec134V0iDG7jfiyS/nnN/ybUNJ2m00hECQQDzcY6pYpQibxJB\\nfxowh7eNj69w2iLwSZdfQFYAQffFSyaBan/Lir4NQEuvxEGd/ydd/sVWNhQThX2Q\\ntU59htSPAkEA9Jlm7Q/bkaHmEkLMXCm5x3zx+x+rV3UQmNZVl1OtPGf6eOT0jRao\\nbne3CMd+fQGLtNB0Vxx6GLVSmFCoY06isQJAJ5JU60m/5J0DbawYeL0G5DbwALsk\\npMSBm5UcpawTd3mQx8alAVQLMqI561dOhz07i/bm4u2lc8rmL0iZeqQZFwJBALZh\\nE2+7nTpPf18qU3p82js2nK9kg7uoXAG5/wPgrpEV7prqDLaOqHQF64IuTdAjsOnX\\nbIfvgdKekMFlksjJP2ECQDpxYW6gPBmAUca9VGocIMbERGQ3rzx8gSDQnQ5Gn+OS\\nVPGQivGPi9EqnVhgvyNK+crpyAzA143fUeR0jn4YF5E=\\n-----END RSA PRIVATE KEY-----'\n"
+      "b'-----BEGIN PUBLIC KEY-----\\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsbChEqYqsoohRKLvLGpskUpuG\\nv+RhBpvBWBdRUtFuFRc68rqBKbpgFGe1RHnU9aFKofSVqkBYyfCcTn+Oifj7QkX/\\n+cG+b/FnL3WxXgF6rBkc/v0eJEVALJBwnO38wRP1SSOmIEqohiFSsQKWtpu2qIZ0\\nsJNn092PxbbLI6mBVwIDAQAB\\n-----END PUBLIC KEY-----'\n"
      ]
     }
    ],
@@ -24,58 +24,55 @@
     "import ast\n",
     "import os\n",
     "\n",
-    "import numpy as np\n",
-    "import pandas as pd\n",
-    "from dotenv import load_dotenv\n",
     "\n",
     "# Generate 1024-bit RSA key pair (private + public key)\n",
     "keyPair = RSA.generate(bits=1024)\n",
-    "pubKey = keyPair.publickey().exportKey(\"PEM\") \n",
-    "\n",
+    "pubKey = keyPair.publickey().exportKey(\"PEM\")\n",
     "privkey = keyPair.exportKey(\"PEM\")\n",
     "\n",
     "# Encrypt keys\n",
-    "#text= b'encrypting'\n",
+    "#message= b'encrypting'\n",
     "#encryptor = PKCS1_OAEP.new(pubKey)\n",
-    "#encrypted = encryptor.encrypt(text)\n",
-    "print(privkey)"
+    "#encrypted = encryptor.encrypt(message)\n",
+    "print(pubKey)"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 34,
+   "execution_count": 77,
    "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "b'encrypting'\n"
-     ]
-    }
-   ],
+   "outputs": [],
    "source": [
-    "decryptor = PKCS1_OAEP.new(keyPair)\n",
-    "decrypted = decryptor.decrypt(ast.literal_eval(str(encrypted)))\n",
-    "print(decrypted)"
+    "key = RSA.generate(2048)\n",
+    "private_key = key.export_key()\n",
+    "file_out = open(\"private.pem\", \"wb\")\n",
+    "file_out.write(private_key)\n",
+    "file_out.close()\n",
+    "\n",
+    "public_key = key.publickey().export_key()\n",
+    "file_out = open(\"receiver.pem\", \"wb\")\n",
+    "file_out.write(public_key)\n",
+    "file_out.close()\n"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 35,
+   "execution_count": 71,
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Signature: b'26a5e0ee2dbfe3050ca72c04564fc0ae89ad5ffd33175c15d48f14d647ee1d212cf722fe1e15bcdae575b10d655d0f58aabaa8a75b69888fb87a3403eab3dd898485514c780ccf4794f14cf7c66a75acad5e8318a0ea91bbab5b3fb10cf8b92201f9ed6187d0e2b2e2b385f56811adc4c97a9c9ab8957258a4e046b6fe047c45'\n",
-      "Signature is valid.\n",
+      "Signature: b'bdbed6212cbe2dff18d12029f8f1e3a359d480572bbaec4184b1349f0d6713deed5a89b0765ff79f78c52c4da4c4ebe6291151630d760f05d1c140e81513e678c7a8568fbba14bd18c4696f8e27697bd513a52557181a353a334b81ea007a5370b81a0800d65373e33f3da687ff9a0b22b17dd6d1b62c5e159884f197b45983a'\n",
+      "Signature is invalid.\n",
       "Signature is invalid.\n"
      ]
     }
    ],
    "source": [
+    "import main \n",
+    "from main import privkey\n",
     "# Sign the message using the PKCS#1 v1.5 signature scheme (RSASP1)\n",
     "msg = b'Message for RSA signing'\n",
     "hash = SHA256.new(msg)\n",
@@ -101,16 +98,25 @@
     "    verifier.verify(hash, signature)\n",
     "    print(\"Signature is valid.\")\n",
     "except:\n",
-    "    print(\"Signature is invalid.\")\n",
-    "    "
+    "    print(\"Signature is invalid.\")"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": null,
+   "execution_count": 62,
    "metadata": {},
-   "outputs": [],
-   "source": []
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "b'74a8fc217cc5017e93692061d50f18f16820565e0fd9659cfc88881cbb14b74ddd68ef00ef6de493501c6cf5b4400d009cfafbc4e29d9a999f05eac691f7ec3130f985522cb5bf9b2256dfd11747942fecd848857590f6dcbde77b160a3872bbd273a48f19b490b130cdc2f250e4069320938910b73f1cef6ecd94ef5145833b'\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(binascii.hexlify(signature))"
+   ]
   },
   {
    "cell_type": "code",
