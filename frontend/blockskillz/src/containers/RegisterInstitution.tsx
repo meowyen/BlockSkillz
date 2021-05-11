@@ -169,7 +169,7 @@ const RegisterInstitution = () => {
                         readOnly: true,
                       }}
                       variant="outlined"
-                      value={keyPair.private}
+                      value={JSON.stringify(keyPair.private).replace(/"/g, "")}
                       fullWidth
                     />
                     <Button
@@ -188,7 +188,7 @@ const RegisterInstitution = () => {
                         readOnly: true,
                       }}
                       variant="outlined"
-                      value={keyPair.public}
+                      value={JSON.stringify(keyPair.public).replace(/"/g, "")}
                       fullWidth
                     />
                     <Button

@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 12,
   },
   table: {
-    minWidth: 640,
+    maxWidth: 640,
   },
 }));
 
@@ -154,7 +154,7 @@ const Tokens = () => {
                                 parseInt(cert.expirationInMs)
                               ).toISODate()}
                         </TableCell>
-                        <TableCell>{cert.signature}</TableCell>
+                        <TableCell style={{ wordBreak: "break-all" }}>{cert.signature}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
