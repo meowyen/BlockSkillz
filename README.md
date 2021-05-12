@@ -5,6 +5,12 @@
 - Bryn Lloyd-Davies
 - Michael Garcia
 
+## Links
+- [Smart Contract](contracts/BlockSkillz.sol)
+- [dApp Code](frontend/blockskillz)
+- [API Code for Keypair Generator](api/main.py)
+- [Demo Notebook](demo.ipynb)
+
 ## Description
 
 This dApp lets you track your diplomas, certifications, endorsed skills and work history on the blockchain. Employers and other users can use this dApp to verify your qualifications.
